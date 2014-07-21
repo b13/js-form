@@ -10,88 +10,84 @@ define([
 	"jquery"
 ], function($) {
 
-	var form = function() {
+		// default options
+	var options = {
+		errorClassName          : 'error'
+		, requiredFieldSelector : '[data-required="true"]'
+	};
 
-		var me = this;
+	var form = function(opts) {
+
+		var
+			me = this
+			,s = $.extend(options, opts);
 
 			// init function
 		function initialize() {
 			return me;
 		}
 
-
 			/**
-			 * validate form
-			 * check all form fields with the class="bJS_required" if the have an input
+			 * validate all form fields which match with the s.requiredFieldSelector selector
 			 *
-			 * the following field type's will be checked:
-			 * 	- input type="text"     : is not empty
+			 * validate field for:
+			 * 	- input type="text"     : not empty
+			 * 	- select                : not empty
+			 * 	- textarea              : not empty
 			 *  - input type="checkbox" : is checked
 			 *  - input type="email"    : email is valid
 			 *
 			 * @$form jquery DOM reference to the form that needs to be checked
-			 *
 			 * @return true || false
 			 */
 		me.validateForm = function($form) {
+			var isValid = true;
 
-			var
-				isValid = true
-				, errorClassName = "b_error";
-
-			$form.find('.bJS_required').each(function() {
+			$form.find(s.requiredFieldSelector).each(function() {
 				var type = $(this).attr('type');
 
-				$(this).removeClass(errorClassName);
-				if ($(this).hasClass('bJS_numberformat')) {
-					var regEx = /[0-9 -()+-\.]+$/;
+				$(this).removeClass(s.errorClassName);
 
-					if ($(this).val().length === 0 || regEx.test($(this).val()) == false) {
-						$(this).addClass(errorClassName);
-						isValid = false;
-					}
-				} else {
-					switch (type) {
-						case "text":
-							if ($(this).val().length === 0) {
-								$(this).addClass(errorClassName);
-								isValid = false;
-							}
-							break;
-						case "checkbox":
-							if (!$(this).is(':checked')) {
-								$(this).addClass(errorClassName);
-								isValid = false;
-							}
-							break;
-						case "email":
-							var regEx = /\S+@\S+\.\S+/;
+				switch (type) {
+					case "text":
+						if ($(this).val().length === 0) {
+							$(this).addClass(s.errorClassName);
+							isValid = false;
+						}
+					break;
+					case "checkbox":
+						if (!$(this).is(':checked')) {
+							$(this).addClass(s.errorClassName);
+							isValid = false;
+						}
+					break;
+					case "email":
+						var regEx = /\S+@\S+\.\S+/;
 
-							if ($(this).val().length === 0 || regEx.test($(this).val()) == false) {
-								$(this).addClass(errorClassName);
-								isValid = false;
-							}
-							break;
-						case "number":
-							var regEx = /[0-9 -()+-\.]+$/;
+						if ($(this).val().length === 0 || regEx.test($(this).val()) == false) {
+							$(this).addClass(s.errorClassName);
+							isValid = false;
+						}
+					break;
+					case "number":
+						var regEx = /[0-9 -()+-\.]+$/;
 
-							if ($(this).val().length === 0 || regEx.test($(this).val()) == false) {
-								$(this).addClass(errorClassName);
-								isValid = false;
-							}
-							break;
-					}
+						if ($(this).val().length === 0 || regEx.test($(this).val()) == false) {
+							$(this).addClass(s.errorClassName);
+							isValid = false;
+						}
+					break;
 				}
 
 				if ($(this)[0].nodeName === "SELECT") {
 					if ($(this).val() == 'disabled' || $(this).val() === null) {
-						$(this).addClass(errorClassName);
+						$(this).addClass(s.errorClassName);
 						isValid = false;
 					}
 				}
 				if ($(this)[0].nodeName === "TEXTAREA") {
 					if ($(this).val().length === 0) {
-						$(this).addClass(errorClassName);
+						$(this).addClass(s.errorClassName);
 						isValid = false;
 					}
 				}
