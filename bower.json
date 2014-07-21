@@ -1,0 +1,9 @@
+{
+  "name": "js-form",
+  "description": "Module to submit a from via ajax and do a basic validation",
+  "main": "dist/form.js",
+  "version": "0.0.1",
+  "dependencies": {
+	"jquery": ">= 1.8.0"
+  }
+}
