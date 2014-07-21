@@ -62,14 +62,14 @@ define([
 						}
 					break;
 					case "radio":
-						if (!$form.find('[name="' + $(this).attr(name) + '"]').is(':checked')) {
+						$form.find('[name="' + $(this).attr("name") + '"]').removeClass(s.errorClassName);
+						if (!$form.find('[name="' + $(this).attr("name") + '"]').is(':checked')) {
 							$(this).addClass(s.errorClassName);
 							isValid = false;
 						}
 					break;
 					case "email":
 						var regEx = /\S+@\S+\.\S+/;
-
 						if ($(this).val().length === 0 || regEx.test($(this).val()) == false) {
 							$(this).addClass(s.errorClassName);
 							isValid = false;
