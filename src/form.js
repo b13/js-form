@@ -153,11 +153,6 @@ define([
 				, processData : false
       			, contentType : false
 				, data        :  formData
-				, error : function(jqXHR, textStatus, errorThrown) {
-					console.debug(jqXHR);
-					console.debug(textStatus);
-					console.debug(errorThrown);
-				}
 			}).promise();
 		};
 
