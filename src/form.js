@@ -104,36 +104,61 @@ define([
 
 
 			/**
-			 * submit a from via ajax and return response as promise
+			 * submit form via ajax and return response as jquery promise
+			 *
 			 * @param {form jQuery selector} $form
 			 * @param {object} [opts]
 			 * @returns {promise object} jQuery promise
 			 */
 		me.submitFormViaAjax = function($form, opts) {
 
-			var
-				dfd    = new jQuery.Deferred()
-				, opts = $.extend({
+			var opts = $.extend({
 					type        : $form.attr('method').toLowerCase() === "post" ? 'post' : 'get'
 					, cache     : false
 					, urlParams : ""
 				}, (typeof opts === 'undefined' ? {} : opts ));
 
-			$.ajax({
+			return $.ajax({
 				url        : $form.attr('action')
 				, type     : opts.type
 				, cache    : opts.cache
 				, dataType : "html"
 				, data     : $form.serialize() + (opts.urlParams.length > 0 ? "&" + opts.urlParams : "" )
-				, success  : function(response) {
-					dfd.resolve(response);
-				}
-				, error   : function(jqXHR, textStatus) {
-					dfd.reject([jqXHR, textStatus]);
-				}
-			});
+			}).promise();
+		};
 
-			return dfd.promise();
+
+			/**
+			 * submit form with a attachment via ajax and return the response as jquery promise
+			 *
+			 * @param {form jQuery selector} $form
+			 * @param {object} [opts]
+			 *
+			 * @returns {promise object} jQuery promise
+			 */
+		me.submitFormWithAttachmentViaAjax = function($form, opts) {
+
+			var formData = new FormData($($form)[0]);
+
+			var opts = $.extend({
+					type          : $form.attr('method').toLowerCase() === "post" ? 'post' : 'get'
+					, cache       : false
+					, urlParams   : ""
+				}, (typeof opts === 'undefined' ? {} : opts ));
+
+
+			return $.ajax({
+				url           : $form.attr('action')
+				, type        : opts.type
+				, processData : false
+      			, contentType : false
+				, data        :  formData
+				, error : function(jqXHR, textStatus, errorThrown) {
+					console.debug(jqXHR);
+					console.debug(textStatus);
+					console.debug(errorThrown);
+				}
+			}).promise();
 		};
 
 		initialize();

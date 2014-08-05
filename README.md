@@ -23,8 +23,13 @@ require(['form'], function(form) {
 		// check if the form is valid
 	formUtilities.validateForm($form);
 
-			// submit from and get response
+		// submit form via ajax and return response as jquery promise
 	formUtilities.submitFormViaAjax($form, {urlParams: 'ajax=1'}).done(function(response) {
+		// use response from ajax request
+	});
+
+		// submit form with a attachment via ajax and return the response as jquery promise
+	formUtilities.submitFormWithAttachmentViaAjax($form, {urlParams: 'ajax=1'}).done(function(response) {
 		// use response from ajax request
 	});
 });
