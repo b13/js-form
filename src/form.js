@@ -138,6 +138,11 @@ define([
 			 */
 		me.submitFormWithAttachmentViaAjax = function($form, opts) {
 
+			if (!window.FormData) {
+				console.log('FormData not available! include "html5-formdata": https://github.com/francois2metz/html5-formdata');
+				return false;
+			}
+
 			var formData = new FormData($($form)[0]);
 
 			var opts = $.extend({
